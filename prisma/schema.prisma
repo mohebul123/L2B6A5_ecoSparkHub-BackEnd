@@ -7,10 +7,86 @@ datasource db {
   provider = "postgresql"
 }
 
+// schema.prisma
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum IdeaStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
-    id        String   @id @default(uuid())
-    email     String   @unique
-    name      String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      Role      @default(MEMBER)
+  ideas     Idea[]
+  votes     Vote[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique // e.g., Energy, Waste
+  ideas Idea[]
+}
+
+model Idea {
+  id               String     @id @default(uuid())
+  title            String
+  problemStatement String
+  solution         String
+  description      String
+  images           String[] // Array of image URLs
+  status           IdeaStatus @default(DRAFT)
+  isPaid           Boolean    @default(false)
+  price            Float      @default(0.0)
+  feedback         String? // Admin feedback for rejection
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  votes    Vote[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vote {
+  id     String @id @default(uuid())
+  type   Int // 1 for Upvote, -1 for Downvote
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  ideaId String
+  idea   Idea   @relation(fields: [ideaId], references: [id])
+
+  @@unique([userId, ideaId]) // One vote per user per idea
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  content String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  ideaId  String
+  idea    Idea   @relation(fields: [ideaId], references: [id])
+
+  // Nested Comment Logic
+  parentId String?
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+
+  createdAt DateTime @default(now())
 }
