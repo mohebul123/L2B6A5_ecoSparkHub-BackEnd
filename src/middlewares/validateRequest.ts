@@ -1,18 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodTypeAny } from "zod";
+import { ZodObject } from "zod";
 
-const validateRequest = (schema: ZodTypeAny) => {
+const validateRequest = (schema: ZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // Body, Query, ar Params - sob ekbare validate koro
       await schema.parseAsync({
         body: req.body,
         query: req.query,
         params: req.params,
-        cookies: req.cookies,
       });
+
       next();
     } catch (err) {
-      next(err); // Ekhon globalErrorHandler eta dhorbe automatically
+      // Error pele eita globalErrorHandler-e pathiye dibe
+      next(err);
     }
   };
 };

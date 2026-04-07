@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { authRouter } from "../modules/auth.route";
 
 const routes = Router();
 
-// routes.use("/auth", authRouter);
+routes.use("/auth", authRouter);
 // routes.use("/category", categoryRouter);
 // routes.use("/meals", mealRouter);
 // routes.use("/providers", providerRouter);

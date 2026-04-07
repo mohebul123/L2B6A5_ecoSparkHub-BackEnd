@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Prisma } from "../../src/generated/prisma/client"; // @prisma/client use kora standard
-import { ZodError } from "zod";
+import { Prisma } from "../generated/prisma/client";
 
 function globalErrorHandler(
   err: any,
@@ -12,51 +11,39 @@ function globalErrorHandler(
   let errorMessage = "Internal Server Error";
   let errorDetails = err;
 
-  // 1. Zod Validation Error Handling (New)
-  if (err instanceof ZodError) {
+  //prismaClientValidationError
+  if (err instanceof Prisma.PrismaClientValidationError) {
     statusCode = 400;
-    errorMessage = "Validation Error";
-    // Zod error theke shudhu dorkari message gulo extract kora
-    errorDetails = err.issues.map((issue) => ({
-      path: issue.path[issue.path.length - 1],
-      message: issue.message,
-    }));
+    errorMessage = "You Provided incorrect field type or missing fields";
   }
-
-  // 2. Prisma Client Validation Error
-  else if (err instanceof Prisma.PrismaClientValidationError) {
-    statusCode = 400;
-    errorMessage = "You provided incorrect field types or missing fields";
-  }
-
-  // 3. Prisma Known Request Errors
+  // PrismaClientKnownRequestError
   else if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    // Note: Use '===' instead of '=' for comparison
     if (err.code === "P2025") {
-      statusCode = 404; // Record not found usually 404 hoy
-      errorMessage = "Record not found in the database";
-    } else if (err.code === "P2002") {
       statusCode = 400;
-      errorMessage = "Duplicate Key Error: Data already exists";
-    } else if (err.code === "P2003") {
+      errorMessage =
+        "An operation failed because it depends on one or more records that were required but not found";
+    } else if ((err.code = "P2002")) {
       statusCode = 400;
-      errorMessage = "Foreign key constraint failed";
+      errorMessage = "Duplicate Key Errors";
+    } else if ((err.code = "P2003")) {
+      statusCode = 400;
+      errorMessage = "Forgein key constraint failed";
+    }
+  } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+    statusCode = 500;
+    errorMessage = "Error Occured during query Execution";
+  } else if (err instanceof Prisma.PrismaClientInitializationError) {
+    if (err.errorCode === "P1000") {
+      statusCode = 401;
+      errorMessage = "Authentication Failed, Please check your Credintials";
+    } else if (err.errorCode === "P1001") {
+      statusCode = 400;
+      errorMessage = "Can't Reach DataBase Server";
     }
   }
 
-  // 4. Prisma Initialization/Connection Errors
-  else if (err instanceof Prisma.PrismaClientInitializationError) {
-    statusCode = 503; // Service Unavailable
-    if (err.errorCode === "P1001") {
-      errorMessage = "Cannot reach database server. Please try again later.";
-    } else {
-      errorMessage = "Database initialization failed";
-    }
-  }
-
-  // Final Response logic
-  res.status(statusCode).json({
-    success: false, // Professional API te success flag rakha bhalo
+  res.status(statusCode);
+  res.json({
     message: errorMessage,
     error: errorDetails,
   });
