@@ -1,27 +1,26 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
+import catchAsync from "../../shared/catchAsync";
+import sendResponse from "../../utils/sendRes";
 import { IdeaService } from "./idea.service";
 
-const createIdea = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // Note: Form-data pathale req.body.data JSON string thake, seta parse korte hoy
-    const ideaData = JSON.parse(req.body.data);
-    const user = (req as any).user; // Auth middleware theke user pabo
+const createIdea = catchAsync(async (req: Request, res: Response) => {
+  // Form-data theke 'data' key-r bhitor asha JSON string-ke parse kora
+  const ideaData = JSON.parse(req.body.data);
+  const user = (req as any).user; // Auth middleware token theke 'id' bosiye dibe
 
-    const result = await IdeaService.createIdeaIntoDB(
-      req.file,
-      ideaData,
-      user.id,
-    );
+  const result = await IdeaService.createIdeaIntoDB(
+    req.file, // Multer file
+    ideaData,
+    user.id,
+  );
 
-    res.status(201).json({
-      success: true,
-      message: "Idea created successfully!",
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Sustainability idea created and submitted for review!",
+    data: result,
+  });
+});
 
 export const IdeaController = {
   createIdea,

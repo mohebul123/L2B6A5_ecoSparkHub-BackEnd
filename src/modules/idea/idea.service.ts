@@ -1,13 +1,10 @@
-// import { PrismaClient } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import { cloudinaryUpload } from "../../config/cloudinary.config";
-
-// const prisma = new PrismaClient();
 
 const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
   let imageUrl = "";
 
-  // 1. Image upload to Cloudinary (jodi file thake)
+  // ১. Cloudinary-te image upload logic
   if (file) {
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinaryUpload.uploader.upload_stream(
@@ -22,12 +19,20 @@ const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
     imageUrl = (uploadResult as any).secure_url;
   }
 
-  // 2. Create Idea in Database
+  // ২. Database-e Idea create (Model: images String[], status PENDING)
   const result = await prisma.idea.create({
     data: {
-      ...payload,
-      image: imageUrl,
-      authorId: userId, // Auth middleware theke ashbe
+      title: payload.title,
+      problemStatement: payload.problemStatement,
+      solution: payload.solution,
+      description: payload.description,
+      categoryId: payload.categoryId,
+      authorId: userId,
+      images: imageUrl ? [imageUrl] : [], // Prisma model onujayi Array-e pathano
+      // Form-data theke asha string-ke boolean o number-e convert kora
+      isPaid: payload.isPaid === "true" || payload.isPaid === true,
+      price: payload.price ? parseFloat(payload.price) : 0,
+      status: "PENDING", // Requirement: Initial status Under Review (Pending)
     },
   });
 
