@@ -1,14 +1,13 @@
 import { prisma } from "../../lib/prisma";
 import { cloudinaryUpload } from "../../config/cloudinary.config";
 
+// ১. Idea Create Logic
 const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
   let imageUrl = "";
-
-  // ১. Cloudinary-te image upload logic
   if (file) {
-    const uploadResult = await new Promise((resolve, reject) => {
+    const uploadResult: any = await new Promise((resolve, reject) => {
       const uploadStream = cloudinaryUpload.uploader.upload_stream(
-        { folder: "eco-spark-ideas" },
+        { folder: "eco-spark" },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
@@ -16,29 +15,67 @@ const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
       );
       uploadStream.end(file.buffer);
     });
-    imageUrl = (uploadResult as any).secure_url;
+    imageUrl = uploadResult.secure_url;
   }
 
-  // ২. Database-e Idea create (Model: images String[], status PENDING)
-  const result = await prisma.idea.create({
+  return await prisma.idea.create({
     data: {
-      title: payload.title,
-      problemStatement: payload.problemStatement,
-      solution: payload.solution,
-      description: payload.description,
-      categoryId: payload.categoryId,
+      ...payload,
       authorId: userId,
-      images: imageUrl ? [imageUrl] : [], // Prisma model onujayi Array-e pathano
-      // Form-data theke asha string-ke boolean o number-e convert kora
+      images: imageUrl ? [imageUrl] : [],
       isPaid: payload.isPaid === "true" || payload.isPaid === true,
       price: payload.price ? parseFloat(payload.price) : 0,
-      status: "PENDING", // Requirement: Initial status Under Review (Pending)
+      status: "PENDING",
     },
   });
+};
 
-  return result;
+// ২. Admin Status Update Logic
+const updateIdeaStatusInDB = async (
+  id: string,
+  payload: { status: any; feedback?: string },
+) => {
+  return await prisma.idea.update({
+    where: { id },
+    data: {
+      status: payload.status,
+      feedback: payload.status === "REJECTED" ? payload.feedback : null,
+    },
+  });
+};
+
+// ৩. Public Approved Ideas (Search & Filter)
+const getAllApprovedIdeasFromDB = async (query: any) => {
+  const { searchTerm, categoryId } = query;
+
+  return await prisma.idea.findMany({
+    where: {
+      status: "APPROVED",
+      ...(categoryId && { categoryId }),
+      ...(searchTerm && {
+        OR: [
+          { title: { contains: searchTerm, mode: "insensitive" } },
+          { description: { contains: searchTerm, mode: "insensitive" } },
+        ],
+      }),
+    },
+    include: { category: true, author: { select: { name: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
+// ৪. My Ideas (For Members)
+const getMyIdeasFromDB = async (userId: string) => {
+  return await prisma.idea.findMany({
+    where: { authorId: userId },
+    include: { category: true },
+    orderBy: { createdAt: "desc" },
+  });
 };
 
 export const IdeaService = {
   createIdeaIntoDB,
+  updateIdeaStatusInDB,
+  getAllApprovedIdeasFromDB,
+  getMyIdeasFromDB,
 };

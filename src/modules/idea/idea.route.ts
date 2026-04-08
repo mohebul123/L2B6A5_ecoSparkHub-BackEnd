@@ -1,21 +1,25 @@
 import { Router } from "express";
-import { upload } from "../../config/cloudinary.config";
 import auth, { UserRole } from "../../middlewares/auth";
+import { upload } from "../../config/cloudinary.config";
 import { IdeaController } from "./idea.controller";
 
 const router = Router();
 
+// ১. Public Route: Approved ideas shobai dekhte parbe
+router.get("/", IdeaController.getAllApprovedIdeas);
+
+// ২. Create Idea: Logged in users (Member/Admin)
 router.post(
   "/create-idea",
-  auth(UserRole.member, UserRole.admin), // Authentication & Role Check
-  upload.single("file"), // Postman-e key-r nam hobe 'file'
+  auth(UserRole.member, UserRole.admin),
+  upload.single("file"),
   IdeaController.createIdea,
 );
 
+// ৩. Member's Own Ideas: Sudhu nijer dashboard-er jonno
+router.get("/my-ideas", auth(UserRole.member), IdeaController.getMyIdeas);
+
+// ৪. Admin Moderation: Tumi jeta bolle (PATCH status)
+router.patch("/status/:id", auth(UserRole.admin), IdeaController.updateStatus);
+
 export const IdeaRoutes = router;
-
-//amdin credential
-// email: adminmoheb@gmail.com
-// password: pass1234
-
-// token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAzNDc5MGE1LWI3ODMtNGJhZi1iMThkLWQwZjM1ZDVmYzQ3ZiIsIm5hbWUiOiJhZG1pbk1vaGViIiwiZW1haWwiOiJhZG1pbm1vaGViQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NTY2NDIwMiwiZXhwIjoxNzc2MjY5MDAyfQ.ggs56TjV4JMSMTu-Y9fOPwp3UBmCRFeqfEu7PkfxyYU
