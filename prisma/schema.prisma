@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// schema.prisma
+// schema.prisma update
 
 enum Role {
   MEMBER
@@ -21,21 +21,29 @@ enum IdeaStatus {
   REJECTED
 }
 
+// Vote type er jonno Enum
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
+}
+
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
+  id        String     @id @default(uuid())
+  email     String     @unique
   password  String
   name      String
-  role      Role      @default(MEMBER)
+  role      Role       @default(MEMBER)
+  isActive  Boolean    @default(true) // Admin user block korar jonno
   ideas     Idea[]
   votes     Vote[]
   comments  Comment[]
-  createdAt DateTime  @default(now())
+  purchases Purchase[] // User ki ki kineche tar record
+  createdAt DateTime   @default(now())
 }
 
 model Category {
   id    String @id @default(uuid())
-  name  String @unique // e.g., Energy, Waste
+  name  String @unique
   ideas Idea[]
 }
 
@@ -45,11 +53,11 @@ model Idea {
   problemStatement String
   solution         String
   description      String
-  images           String[] // Array of image URLs
+  images           String[]
   status           IdeaStatus @default(DRAFT)
   isPaid           Boolean    @default(false)
   price            Float      @default(0.0)
-  feedback         String? // Admin feedback for rejection
+  feedback         String?
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
@@ -57,22 +65,23 @@ model Idea {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  votes    Vote[]
-  comments Comment[]
+  votes     Vote[]
+  comments  Comment[]
+  purchases Purchase[] // Ei idea-ta koyjon kineche
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Vote {
-  id     String @id @default(uuid())
-  type   Int // 1 for Upvote, -1 for Downvote
+  id     String   @id @default(uuid())
+  type   VoteType // UPVOTE or DOWNVOTE
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
   ideaId String
-  idea   Idea   @relation(fields: [ideaId], references: [id])
+  idea   Idea     @relation(fields: [ideaId], references: [id])
 
-  @@unique([userId, ideaId]) // One vote per user per idea
+  @@unique([userId, ideaId])
 }
 
 model Comment {
@@ -83,10 +92,22 @@ model Comment {
   ideaId  String
   idea    Idea   @relation(fields: [ideaId], references: [id])
 
-  // Nested Comment Logic
   parentId String?
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
 
   createdAt DateTime @default(now())
+}
+
+// PAID IDEAS track korar jonno eita dorkar
+model Purchase {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  ideaId    String
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+
+  @@unique([userId, ideaId]) // Ekjon ekta idea ekbar-i kinbe
 }

@@ -1,8 +1,8 @@
 import { NextFunction, RequestHandler } from "express";
 import { authService } from "./auth.service";
-import sendResponse from "../../src/utils/sendRes";
+import sendResponse from "../../utils/sendRes";
 import { JwtPayload } from "jsonwebtoken";
-import catchAsync from "../shared/catchAsync";
+import catchAsync from "../../shared/catchAsync";
 
 // const getAllSpecialites = catchAsync(
 //     async (req: Request,res:Response) =>{

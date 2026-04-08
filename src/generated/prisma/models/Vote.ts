@@ -20,30 +20,20 @@ export type VoteModel = runtime.Types.Result.DefaultSelection<Prisma.$VotePayloa
 
 export type AggregateVote = {
   _count: VoteCountAggregateOutputType | null
-  _avg: VoteAvgAggregateOutputType | null
-  _sum: VoteSumAggregateOutputType | null
   _min: VoteMinAggregateOutputType | null
   _max: VoteMaxAggregateOutputType | null
 }
 
-export type VoteAvgAggregateOutputType = {
-  type: number | null
-}
-
-export type VoteSumAggregateOutputType = {
-  type: number | null
-}
-
 export type VoteMinAggregateOutputType = {
   id: string | null
-  type: number | null
+  type: $Enums.VoteType | null
   userId: string | null
   ideaId: string | null
 }
 
 export type VoteMaxAggregateOutputType = {
   id: string | null
-  type: number | null
+  type: $Enums.VoteType | null
   userId: string | null
   ideaId: string | null
 }
@@ -56,14 +46,6 @@ export type VoteCountAggregateOutputType = {
   _all: number
 }
 
-
-export type VoteAvgAggregateInputType = {
-  type?: true
-}
-
-export type VoteSumAggregateInputType = {
-  type?: true
-}
 
 export type VoteMinAggregateInputType = {
   id?: true
@@ -125,18 +107,6 @@ export type VoteAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: VoteAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: VoteSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: VoteMinAggregateInputType
@@ -167,20 +137,16 @@ export type VoteGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: VoteCountAggregateInputType | true
-  _avg?: VoteAvgAggregateInputType
-  _sum?: VoteSumAggregateInputType
   _min?: VoteMinAggregateInputType
   _max?: VoteMaxAggregateInputType
 }
 
 export type VoteGroupByOutputType = {
   id: string
-  type: number
+  type: $Enums.VoteType
   userId: string
   ideaId: string
   _count: VoteCountAggregateOutputType | null
-  _avg: VoteAvgAggregateOutputType | null
-  _sum: VoteSumAggregateOutputType | null
   _min: VoteMinAggregateOutputType | null
   _max: VoteMaxAggregateOutputType | null
 }
@@ -205,7 +171,7 @@ export type VoteWhereInput = {
   OR?: Prisma.VoteWhereInput[]
   NOT?: Prisma.VoteWhereInput | Prisma.VoteWhereInput[]
   id?: Prisma.StringFilter<"Vote"> | string
-  type?: Prisma.IntFilter<"Vote"> | number
+  type?: Prisma.EnumVoteTypeFilter<"Vote"> | $Enums.VoteType
   userId?: Prisma.StringFilter<"Vote"> | string
   ideaId?: Prisma.StringFilter<"Vote"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -227,7 +193,7 @@ export type VoteWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.VoteWhereInput | Prisma.VoteWhereInput[]
   OR?: Prisma.VoteWhereInput[]
   NOT?: Prisma.VoteWhereInput | Prisma.VoteWhereInput[]
-  type?: Prisma.IntFilter<"Vote"> | number
+  type?: Prisma.EnumVoteTypeFilter<"Vote"> | $Enums.VoteType
   userId?: Prisma.StringFilter<"Vote"> | string
   ideaId?: Prisma.StringFilter<"Vote"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -240,10 +206,8 @@ export type VoteOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   ideaId?: Prisma.SortOrder
   _count?: Prisma.VoteCountOrderByAggregateInput
-  _avg?: Prisma.VoteAvgOrderByAggregateInput
   _max?: Prisma.VoteMaxOrderByAggregateInput
   _min?: Prisma.VoteMinOrderByAggregateInput
-  _sum?: Prisma.VoteSumOrderByAggregateInput
 }
 
 export type VoteScalarWhereWithAggregatesInput = {
@@ -251,54 +215,54 @@ export type VoteScalarWhereWithAggregatesInput = {
   OR?: Prisma.VoteScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VoteScalarWhereWithAggregatesInput | Prisma.VoteScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Vote"> | string
-  type?: Prisma.IntWithAggregatesFilter<"Vote"> | number
+  type?: Prisma.EnumVoteTypeWithAggregatesFilter<"Vote"> | $Enums.VoteType
   userId?: Prisma.StringWithAggregatesFilter<"Vote"> | string
   ideaId?: Prisma.StringWithAggregatesFilter<"Vote"> | string
 }
 
 export type VoteCreateInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   user: Prisma.UserCreateNestedOneWithoutVotesInput
   idea: Prisma.IdeaCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   userId: string
   ideaId: string
 }
 
 export type VoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   user?: Prisma.UserUpdateOneRequiredWithoutVotesNestedInput
   idea?: Prisma.IdeaUpdateOneRequiredWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   ideaId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VoteCreateManyInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   userId: string
   ideaId: string
 }
 
 export type VoteUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
 }
 
 export type VoteUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   ideaId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -325,10 +289,6 @@ export type VoteCountOrderByAggregateInput = {
   ideaId?: Prisma.SortOrder
 }
 
-export type VoteAvgOrderByAggregateInput = {
-  type?: Prisma.SortOrder
-}
-
 export type VoteMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -341,10 +301,6 @@ export type VoteMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   ideaId?: Prisma.SortOrder
-}
-
-export type VoteSumOrderByAggregateInput = {
-  type?: Prisma.SortOrder
 }
 
 export type VoteCreateNestedManyWithoutUserInput = {
@@ -431,23 +387,19 @@ export type VoteUncheckedUpdateManyWithoutIdeaNestedInput = {
   deleteMany?: Prisma.VoteScalarWhereInput | Prisma.VoteScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type EnumVoteTypeFieldUpdateOperationsInput = {
+  set?: $Enums.VoteType
 }
 
 export type VoteCreateWithoutUserInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   idea: Prisma.IdeaCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutUserInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   ideaId: string
 }
 
@@ -482,20 +434,20 @@ export type VoteScalarWhereInput = {
   OR?: Prisma.VoteScalarWhereInput[]
   NOT?: Prisma.VoteScalarWhereInput | Prisma.VoteScalarWhereInput[]
   id?: Prisma.StringFilter<"Vote"> | string
-  type?: Prisma.IntFilter<"Vote"> | number
+  type?: Prisma.EnumVoteTypeFilter<"Vote"> | $Enums.VoteType
   userId?: Prisma.StringFilter<"Vote"> | string
   ideaId?: Prisma.StringFilter<"Vote"> | string
 }
 
 export type VoteCreateWithoutIdeaInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   user: Prisma.UserCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutIdeaInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   userId: string
 }
 
@@ -527,49 +479,49 @@ export type VoteUpdateManyWithWhereWithoutIdeaInput = {
 
 export type VoteCreateManyUserInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   ideaId: string
 }
 
 export type VoteUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   idea?: Prisma.IdeaUpdateOneRequiredWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   ideaId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VoteUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   ideaId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VoteCreateManyIdeaInput = {
   id?: string
-  type: number
+  type: $Enums.VoteType
   userId: string
 }
 
 export type VoteUpdateWithoutIdeaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   user?: Prisma.UserUpdateOneRequiredWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutIdeaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VoteUncheckedUpdateManyWithoutIdeaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -631,7 +583,7 @@ export type $VotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    type: number
+    type: $Enums.VoteType
     userId: string
     ideaId: string
   }, ExtArgs["result"]["vote"]>
@@ -1060,7 +1012,7 @@ export interface Prisma__VoteClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface VoteFieldRefs {
   readonly id: Prisma.FieldRef<"Vote", 'String'>
-  readonly type: Prisma.FieldRef<"Vote", 'Int'>
+  readonly type: Prisma.FieldRef<"Vote", 'VoteType'>
   readonly userId: Prisma.FieldRef<"Vote", 'String'>
   readonly ideaId: Prisma.FieldRef<"Vote", 'String'>
 }

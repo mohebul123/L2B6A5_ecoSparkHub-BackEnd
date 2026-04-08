@@ -42,3 +42,8 @@ export type Vote = Prisma.VoteModel
  * 
  */
 export type Comment = Prisma.CommentModel
+/**
+ * Model Purchase
+ * 
+ */
+export type Purchase = Prisma.PurchaseModel

@@ -25,3 +25,11 @@ export const IdeaStatus = {
 } as const
 
 export type IdeaStatus = (typeof IdeaStatus)[keyof typeof IdeaStatus]
+
+
+export const VoteType = {
+  UPVOTE: 'UPVOTE',
+  DOWNVOTE: 'DOWNVOTE'
+} as const
+
+export type VoteType = (typeof VoteType)[keyof typeof VoteType]

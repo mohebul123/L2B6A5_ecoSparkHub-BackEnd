@@ -288,6 +288,7 @@ export type IdeaWhereInput = {
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   votes?: Prisma.VoteListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  purchases?: Prisma.PurchaseListRelationFilter
 }
 
 export type IdeaOrderByWithRelationInput = {
@@ -309,6 +310,7 @@ export type IdeaOrderByWithRelationInput = {
   category?: Prisma.CategoryOrderByWithRelationInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
+  purchases?: Prisma.PurchaseOrderByRelationAggregateInput
 }
 
 export type IdeaWhereUniqueInput = Prisma.AtLeast<{
@@ -333,6 +335,7 @@ export type IdeaWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   votes?: Prisma.VoteListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  purchases?: Prisma.PurchaseListRelationFilter
 }, "id">
 
 export type IdeaOrderByWithAggregationInput = {
@@ -394,6 +397,7 @@ export type IdeaCreateInput = {
   category: Prisma.CategoryCreateNestedOneWithoutIdeasInput
   votes?: Prisma.VoteCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUncheckedCreateInput = {
@@ -413,6 +417,7 @@ export type IdeaUncheckedCreateInput = {
   updatedAt?: Date | string
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUpdateInput = {
@@ -432,6 +437,7 @@ export type IdeaUpdateInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutIdeasNestedInput
   votes?: Prisma.VoteUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateInput = {
@@ -451,6 +457,7 @@ export type IdeaUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   votes?: Prisma.VoteUncheckedUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaCreateManyInput = {
@@ -679,10 +686,6 @@ export type EnumIdeaStatusFieldUpdateOperationsInput = {
   set?: $Enums.IdeaStatus
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -723,6 +726,20 @@ export type IdeaUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.IdeaUpdateToOneWithWhereWithoutCommentsInput, Prisma.IdeaUpdateWithoutCommentsInput>, Prisma.IdeaUncheckedUpdateWithoutCommentsInput>
 }
 
+export type IdeaCreateNestedOneWithoutPurchasesInput = {
+  create?: Prisma.XOR<Prisma.IdeaCreateWithoutPurchasesInput, Prisma.IdeaUncheckedCreateWithoutPurchasesInput>
+  connectOrCreate?: Prisma.IdeaCreateOrConnectWithoutPurchasesInput
+  connect?: Prisma.IdeaWhereUniqueInput
+}
+
+export type IdeaUpdateOneRequiredWithoutPurchasesNestedInput = {
+  create?: Prisma.XOR<Prisma.IdeaCreateWithoutPurchasesInput, Prisma.IdeaUncheckedCreateWithoutPurchasesInput>
+  connectOrCreate?: Prisma.IdeaCreateOrConnectWithoutPurchasesInput
+  upsert?: Prisma.IdeaUpsertWithoutPurchasesInput
+  connect?: Prisma.IdeaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IdeaUpdateToOneWithWhereWithoutPurchasesInput, Prisma.IdeaUpdateWithoutPurchasesInput>, Prisma.IdeaUncheckedUpdateWithoutPurchasesInput>
+}
+
 export type IdeaCreateWithoutAuthorInput = {
   id?: string
   title: string
@@ -739,6 +756,7 @@ export type IdeaCreateWithoutAuthorInput = {
   category: Prisma.CategoryCreateNestedOneWithoutIdeasInput
   votes?: Prisma.VoteCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUncheckedCreateWithoutAuthorInput = {
@@ -757,6 +775,7 @@ export type IdeaUncheckedCreateWithoutAuthorInput = {
   updatedAt?: Date | string
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaCreateOrConnectWithoutAuthorInput = {
@@ -821,6 +840,7 @@ export type IdeaCreateWithoutCategoryInput = {
   author: Prisma.UserCreateNestedOneWithoutIdeasInput
   votes?: Prisma.VoteCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUncheckedCreateWithoutCategoryInput = {
@@ -839,6 +859,7 @@ export type IdeaUncheckedCreateWithoutCategoryInput = {
   updatedAt?: Date | string
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutIdeaInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaCreateOrConnectWithoutCategoryInput = {
@@ -883,6 +904,7 @@ export type IdeaCreateWithoutVotesInput = {
   author: Prisma.UserCreateNestedOneWithoutIdeasInput
   category: Prisma.CategoryCreateNestedOneWithoutIdeasInput
   comments?: Prisma.CommentCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUncheckedCreateWithoutVotesInput = {
@@ -901,6 +923,7 @@ export type IdeaUncheckedCreateWithoutVotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaCreateOrConnectWithoutVotesInput = {
@@ -935,6 +958,7 @@ export type IdeaUpdateWithoutVotesInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutIdeasNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutIdeasNestedInput
   comments?: Prisma.CommentUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateWithoutVotesInput = {
@@ -953,6 +977,7 @@ export type IdeaUncheckedUpdateWithoutVotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaCreateWithoutCommentsInput = {
@@ -971,6 +996,7 @@ export type IdeaCreateWithoutCommentsInput = {
   author: Prisma.UserCreateNestedOneWithoutIdeasInput
   category: Prisma.CategoryCreateNestedOneWithoutIdeasInput
   votes?: Prisma.VoteCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaUncheckedCreateWithoutCommentsInput = {
@@ -989,6 +1015,7 @@ export type IdeaUncheckedCreateWithoutCommentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutIdeaInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutIdeaInput
 }
 
 export type IdeaCreateOrConnectWithoutCommentsInput = {
@@ -1023,6 +1050,7 @@ export type IdeaUpdateWithoutCommentsInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutIdeasNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutIdeasNestedInput
   votes?: Prisma.VoteUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateWithoutCommentsInput = {
@@ -1041,6 +1069,99 @@ export type IdeaUncheckedUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   votes?: Prisma.VoteUncheckedUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutIdeaNestedInput
+}
+
+export type IdeaCreateWithoutPurchasesInput = {
+  id?: string
+  title: string
+  problemStatement: string
+  solution: string
+  description: string
+  images?: Prisma.IdeaCreateimagesInput | string[]
+  status?: $Enums.IdeaStatus
+  isPaid?: boolean
+  price?: number
+  feedback?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutIdeasInput
+  category: Prisma.CategoryCreateNestedOneWithoutIdeasInput
+  votes?: Prisma.VoteCreateNestedManyWithoutIdeaInput
+  comments?: Prisma.CommentCreateNestedManyWithoutIdeaInput
+}
+
+export type IdeaUncheckedCreateWithoutPurchasesInput = {
+  id?: string
+  title: string
+  problemStatement: string
+  solution: string
+  description: string
+  images?: Prisma.IdeaCreateimagesInput | string[]
+  status?: $Enums.IdeaStatus
+  isPaid?: boolean
+  price?: number
+  feedback?: string | null
+  authorId: string
+  categoryId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutIdeaInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutIdeaInput
+}
+
+export type IdeaCreateOrConnectWithoutPurchasesInput = {
+  where: Prisma.IdeaWhereUniqueInput
+  create: Prisma.XOR<Prisma.IdeaCreateWithoutPurchasesInput, Prisma.IdeaUncheckedCreateWithoutPurchasesInput>
+}
+
+export type IdeaUpsertWithoutPurchasesInput = {
+  update: Prisma.XOR<Prisma.IdeaUpdateWithoutPurchasesInput, Prisma.IdeaUncheckedUpdateWithoutPurchasesInput>
+  create: Prisma.XOR<Prisma.IdeaCreateWithoutPurchasesInput, Prisma.IdeaUncheckedCreateWithoutPurchasesInput>
+  where?: Prisma.IdeaWhereInput
+}
+
+export type IdeaUpdateToOneWithWhereWithoutPurchasesInput = {
+  where?: Prisma.IdeaWhereInput
+  data: Prisma.XOR<Prisma.IdeaUpdateWithoutPurchasesInput, Prisma.IdeaUncheckedUpdateWithoutPurchasesInput>
+}
+
+export type IdeaUpdateWithoutPurchasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  problemStatement?: Prisma.StringFieldUpdateOperationsInput | string
+  solution?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.IdeaUpdateimagesInput | string[]
+  status?: Prisma.EnumIdeaStatusFieldUpdateOperationsInput | $Enums.IdeaStatus
+  isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutIdeasNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutIdeasNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutIdeaNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutIdeaNestedInput
+}
+
+export type IdeaUncheckedUpdateWithoutPurchasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  problemStatement?: Prisma.StringFieldUpdateOperationsInput | string
+  solution?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.IdeaUpdateimagesInput | string[]
+  status?: Prisma.EnumIdeaStatusFieldUpdateOperationsInput | $Enums.IdeaStatus
+  isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutIdeaNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaCreateManyAuthorInput = {
@@ -1075,6 +1196,7 @@ export type IdeaUpdateWithoutAuthorInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutIdeasNestedInput
   votes?: Prisma.VoteUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateWithoutAuthorInput = {
@@ -1093,6 +1215,7 @@ export type IdeaUncheckedUpdateWithoutAuthorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   votes?: Prisma.VoteUncheckedUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateManyWithoutAuthorInput = {
@@ -1143,6 +1266,7 @@ export type IdeaUpdateWithoutCategoryInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutIdeasNestedInput
   votes?: Prisma.VoteUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateWithoutCategoryInput = {
@@ -1161,6 +1285,7 @@ export type IdeaUncheckedUpdateWithoutCategoryInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   votes?: Prisma.VoteUncheckedUpdateManyWithoutIdeaNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutIdeaNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutIdeaNestedInput
 }
 
 export type IdeaUncheckedUpdateManyWithoutCategoryInput = {
@@ -1187,11 +1312,13 @@ export type IdeaUncheckedUpdateManyWithoutCategoryInput = {
 export type IdeaCountOutputType = {
   votes: number
   comments: number
+  purchases: number
 }
 
 export type IdeaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   votes?: boolean | IdeaCountOutputTypeCountVotesArgs
   comments?: boolean | IdeaCountOutputTypeCountCommentsArgs
+  purchases?: boolean | IdeaCountOutputTypeCountPurchasesArgs
 }
 
 /**
@@ -1218,6 +1345,13 @@ export type IdeaCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.CommentWhereInput
 }
 
+/**
+ * IdeaCountOutputType without action
+ */
+export type IdeaCountOutputTypeCountPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PurchaseWhereInput
+}
+
 
 export type IdeaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1238,6 +1372,7 @@ export type IdeaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   votes?: boolean | Prisma.Idea$votesArgs<ExtArgs>
   comments?: boolean | Prisma.Idea$commentsArgs<ExtArgs>
+  purchases?: boolean | Prisma.Idea$purchasesArgs<ExtArgs>
   _count?: boolean | Prisma.IdeaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["idea"]>
 
@@ -1302,6 +1437,7 @@ export type IdeaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   votes?: boolean | Prisma.Idea$votesArgs<ExtArgs>
   comments?: boolean | Prisma.Idea$commentsArgs<ExtArgs>
+  purchases?: boolean | Prisma.Idea$purchasesArgs<ExtArgs>
   _count?: boolean | Prisma.IdeaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type IdeaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1320,6 +1456,7 @@ export type $IdeaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     category: Prisma.$CategoryPayload<ExtArgs>
     votes: Prisma.$VotePayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
+    purchases: Prisma.$PurchasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1734,6 +1871,7 @@ export interface Prisma__IdeaClient<T, Null = never, ExtArgs extends runtime.Typ
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   votes<T extends Prisma.Idea$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Idea$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Idea$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Idea$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  purchases<T extends Prisma.Idea$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Idea$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2223,6 +2361,30 @@ export type Idea$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * Idea.purchases
+ */
+export type Idea$purchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Purchase
+   */
+  select?: Prisma.PurchaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Purchase
+   */
+  omit?: Prisma.PurchaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PurchaseInclude<ExtArgs> | null
+  where?: Prisma.PurchaseWhereInput
+  orderBy?: Prisma.PurchaseOrderByWithRelationInput | Prisma.PurchaseOrderByWithRelationInput[]
+  cursor?: Prisma.PurchaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PurchaseScalarFieldEnum | Prisma.PurchaseScalarFieldEnum[]
 }
 
 /**
