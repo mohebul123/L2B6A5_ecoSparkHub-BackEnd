@@ -5,6 +5,7 @@ import { IdeaRoutes } from "../modules/idea/idea.route";
 import { VoteRoutes } from "../modules/vote/vote.route";
 import { CommentRoutes } from "../modules/comment/comment.route";
 import { PurchaseRoutes } from "../modules/purchase/purchase.route";
+import { UserRoutes } from "../modules/user/user.route";
 
 const routes = Router();
 
@@ -14,6 +15,7 @@ routes.use("/ideas", IdeaRoutes);
 routes.use("/votes", VoteRoutes);
 routes.use("/comments", CommentRoutes);
 routes.use("/purchases", PurchaseRoutes);
+routes.use("/users", UserRoutes);
 // routes.use("/category", categoryRouter);
 // routes.use("/meals", mealRouter);
 // routes.use("/providers", providerRouter);
