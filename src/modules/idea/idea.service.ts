@@ -75,20 +75,54 @@ const getAllApprovedIdeasFromDB = async (query: any) => {
 };
 
 // ৪. Single Idea Details
-const getSingleIdeaFromDB = async (id: string) => {
-  return await prisma.idea.findUnique({
+const getSingleIdeaFromDB = async (
+  id: string,
+  userId?: string,
+  userRole?: string,
+) => {
+  const idea = await prisma.idea.findUnique({
     where: { id },
     include: {
       category: true,
-      author: { select: { name: true, profileImage: true, bio: true } },
-      votes: true,
-      comments: {
-        include: {
-          user: { select: { name: true, profileImage: true } },
-        },
-      },
+      author: { select: { id: true, name: true, email: true } },
+      _count: { select: { votes: true, comments: true } },
     },
   });
+
+  if (!idea) throw new Error("Idea not found");
+
+  // ১. Logic Checks:
+  const isAuthor = userId === idea.authorId;
+  const isAdmin = userRole === "ADMIN"; // Eikhane add korbe logic-ta
+
+  const isPurchased = userId
+    ? await prisma.purchase.findUnique({
+        where: { userId_ideaId: { userId, ideaId: id } },
+      })
+    : false;
+
+  // ২. Access Control Logic:
+  // Jodi Paid hoy EBONG (User Author na hoy, Admin-o na hoy, abar Purchase-o na thake)
+  if (idea.isPaid && !isAuthor && !isAdmin && !isPurchased) {
+    return {
+      id: idea.id,
+      title: idea.title,
+      problemStatement: idea.problemStatement,
+      status: idea.status,
+      isPaid: true,
+      price: idea.price,
+      author: idea.author,
+      category: idea.category,
+      message:
+        "This is a premium idea. Please purchase to see the solution and images.",
+      solution: "LOCKED",
+      description: "LOCKED",
+      images: [],
+    };
+  }
+
+  // ৩. Access granted (For Free ideas, Authors, Admins, or Buyers)
+  return idea;
 };
 
 // ৫. My Ideas (Member Dashboard)

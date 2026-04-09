@@ -53,12 +53,19 @@ const getMyIdeas = catchAsync(async (req, res) => {
 
 const getSingleIdea = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await IdeaService.getSingleIdeaFromDB(id as string);
+  const user = (req as any).user; // Auth middleware theke user info ashe
+
+  // userId ar role pathiye dilam
+  const result = await IdeaService.getSingleIdeaFromDB(
+    id as string,
+    user?.id,
+    user?.role,
+  );
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Idea details fetched successfully!",
+    message: "Idea details fetched!",
     data: result,
   });
 });
