@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { cloudinaryUpload } from "../../config/cloudinary.config";
 
-// ১. Idea Create Logic
+// ১. Idea Create
 const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
   let imageUrl = "";
   if (file) {
@@ -30,7 +30,7 @@ const createIdeaIntoDB = async (file: any, payload: any, userId: string) => {
   });
 };
 
-// ২. Admin Status Update Logic
+// ২. Admin Status Update
 const updateIdeaStatusInDB = async (
   id: string,
   payload: { status: any; feedback?: string },
@@ -44,7 +44,7 @@ const updateIdeaStatusInDB = async (
   });
 };
 
-// ৩. Public Approved Ideas (Search & Filter)
+// ৩. Public Approved Ideas (Full Logic with Vote Count)
 const getAllApprovedIdeasFromDB = async (query: any) => {
   const { searchTerm, categoryId } = query;
 
@@ -59,16 +59,43 @@ const getAllApprovedIdeasFromDB = async (query: any) => {
         ],
       }),
     },
-    include: { category: true, author: { select: { name: true } } },
+    include: {
+      category: true,
+      author: { select: { name: true, profileImage: true } },
+      votes: true, // Protita vote details dekhabe
+      _count: {
+        select: {
+          votes: true, // Total koyta vote poreche tar count dekhabe
+          comments: true, // Pore jakhon comment korbo tar count-o auto ashbe
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 };
 
-// ৪. My Ideas (For Members)
+// ৪. Single Idea Details
+const getSingleIdeaFromDB = async (id: string) => {
+  return await prisma.idea.findUnique({
+    where: { id },
+    include: {
+      category: true,
+      author: { select: { name: true, profileImage: true, bio: true } },
+      votes: true,
+      comments: {
+        include: {
+          user: { select: { name: true, profileImage: true } },
+        },
+      },
+    },
+  });
+};
+
+// ৫. My Ideas (Member Dashboard)
 const getMyIdeasFromDB = async (userId: string) => {
   return await prisma.idea.findMany({
     where: { authorId: userId },
-    include: { category: true },
+    include: { category: true, _count: { select: { votes: true } } },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -77,5 +104,6 @@ export const IdeaService = {
   createIdeaIntoDB,
   updateIdeaStatusInDB,
   getAllApprovedIdeasFromDB,
+  getSingleIdeaFromDB,
   getMyIdeasFromDB,
 };

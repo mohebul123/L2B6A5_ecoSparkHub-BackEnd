@@ -22,4 +22,6 @@ router.get("/my-ideas", auth(UserRole.member), IdeaController.getMyIdeas);
 // ৪. Admin Moderation: Tumi jeta bolle (PATCH status)
 router.patch("/status/:id", auth(UserRole.admin), IdeaController.updateStatus);
 
+router.get("/:id", IdeaController.getSingleIdea); // Publicly ekta idea dekha
+
 export const IdeaRoutes = router;

@@ -51,9 +51,24 @@ const getMyIdeas = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleIdea = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await IdeaService.getSingleIdeaFromDB(id as string);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Idea details fetched successfully!",
+    data: result,
+  });
+});
+
+// controller export list-e 'getSingleIdea' add korte bhulo na
+
 export const IdeaController = {
   createIdea,
   updateStatus,
   getAllApprovedIdeas,
   getMyIdeas,
+  getSingleIdea,
 };

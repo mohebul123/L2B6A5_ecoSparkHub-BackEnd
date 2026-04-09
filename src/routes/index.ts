@@ -3,6 +3,8 @@ import { authRouter } from "../modules/auth/auth.route";
 import { CategoryRoutes } from "../modules/category/category.route";
 import { IdeaRoutes } from "../modules/idea/idea.route";
 import { VoteRoutes } from "../modules/vote/vote.route";
+import { CommentRoutes } from "../modules/comment/comment.route";
+import { PurchaseRoutes } from "../modules/purchase/purchase.route";
 
 const routes = Router();
 
@@ -10,6 +12,8 @@ routes.use("/auth", authRouter);
 routes.use("/categories", CategoryRoutes);
 routes.use("/ideas", IdeaRoutes);
 routes.use("/votes", VoteRoutes);
+routes.use("/comments", CommentRoutes);
+routes.use("/purchases", PurchaseRoutes);
 // routes.use("/category", categoryRouter);
 // routes.use("/meals", mealRouter);
 // routes.use("/providers", providerRouter);
