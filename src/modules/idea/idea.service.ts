@@ -44,34 +44,82 @@ const updateIdeaStatusInDB = async (
   });
 };
 
-// ৩. Public Approved Ideas (Full Logic with Vote Count)
 const getAllApprovedIdeasFromDB = async (query: any) => {
-  const { searchTerm, categoryId } = query;
+  const { searchTerm, category, page, limit } = query; // Query theke data nilam
 
-  return await prisma.idea.findMany({
-    where: {
-      status: "APPROVED",
-      ...(categoryId && { categoryId }),
-      ...(searchTerm && {
-        OR: [
-          { title: { contains: searchTerm, mode: "insensitive" } },
-          { description: { contains: searchTerm, mode: "insensitive" } },
-        ],
-      }),
-    },
-    include: {
-      category: true,
-      author: { select: { name: true, profileImage: true } },
-      votes: true, // Protita vote details dekhabe
-      _count: {
-        select: {
-          votes: true, // Total koyta vote poreche tar count dekhabe
-          comments: true, // Pore jakhon comment korbo tar count-o auto ashbe
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
+
+  // ১. Dynamic Filter Object
+  const whereConditions: any = {
+    status: "APPROVED",
+  };
+
+  // ২. Search Logic (Title e khujbe)
+  if (searchTerm) {
+    whereConditions.OR = [
+      { title: { contains: searchTerm as string, mode: "insensitive" } },
+      {
+        problemStatement: {
+          contains: searchTerm as string,
+          mode: "insensitive",
         },
       },
+    ];
+  }
+
+  // ৩. Category Filter Logic
+  if (category) {
+    whereConditions.categoryId = category;
+  }
+
+  const result = await prisma.idea.findMany({
+    where: whereConditions, // Ekhane dynamic condition boshalo
+    include: {
+      category: true,
+      author: { select: { name: true } },
+      _count: { select: { votes: true, comments: true } },
     },
+    skip,
+    take: limitNumber,
     orderBy: { createdAt: "desc" },
   });
+
+  const total = await prisma.idea.count({ where: whereConditions });
+
+  return {
+    meta: {
+      page: pageNumber,
+      limit: limitNumber,
+      total,
+      totalPage: Math.ceil(total / limitNumber),
+    },
+    data: result,
+  };
+};
+
+const getAllIdeasForAdminFromDB = async (query: any) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const result = await prisma.idea.findMany({
+    include: {
+      category: true,
+      author: { select: { name: true, email: true } },
+    },
+    skip: skip,
+    take: limit,
+    orderBy: { createdAt: "desc" }, // Admin dekhbe shobcheye latest konta ashlo
+  });
+
+  const total = await prisma.idea.count();
+
+  return {
+    meta: { page, limit, total, totalPage: Math.ceil(total / limit) },
+    data: result,
+  };
 };
 
 // ৪. Single Idea Details
@@ -140,4 +188,5 @@ export const IdeaService = {
   getAllApprovedIdeasFromDB,
   getSingleIdeaFromDB,
   getMyIdeasFromDB,
+  getAllIdeasForAdminFromDB,
 };

@@ -35,8 +35,21 @@ const getAllApprovedIdeas = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Ideas fetched!",
-    data: result,
+    message: "Ideas fetched successfully!",
+    meta: result.meta, // Eita missing chilo
+    data: result.data,
+  });
+});
+
+const getAllIdeasForAdmin = catchAsync(async (req: Request, res: Response) => {
+  const result = await IdeaService.getAllIdeasForAdminFromDB(req.query);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "All ideas fetched for admin moderation!",
+    meta: result.meta,
+    data: result.data,
   });
 });
 
@@ -76,6 +89,7 @@ export const IdeaController = {
   createIdea,
   updateStatus,
   getAllApprovedIdeas,
+  getAllIdeasForAdmin,
   getMyIdeas,
   getSingleIdea,
 };

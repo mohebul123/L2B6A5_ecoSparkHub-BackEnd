@@ -1,19 +1,25 @@
 import { Response } from "express";
 
+// Type definition update
 type TResponse<T> = {
   statusCode: number;
   success: boolean;
-  message: string;
-  data?: T;
+  message?: string;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+  };
+  data: T;
 };
 
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
-  const { statusCode, success, message, data: DataResponse } = data;
-
-  res.status(statusCode).json({
-    success,
-    message,
-    data: DataResponse,
+  res.status(data.statusCode).json({
+    success: data.success,
+    message: data.message,
+    meta: data.meta, // Response-e meta pathao
+    data: data.data,
   });
 };
 
